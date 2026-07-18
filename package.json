@@ -1,0 +1,10 @@
+{
+  "name": "sign-to-erebor",
+  "version": "1.0.0",
+  "description": "When2Meet-style group scheduling with a real calendar: pick days, drill into hours, or go days-only.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
