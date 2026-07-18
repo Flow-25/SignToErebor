@@ -7,7 +7,7 @@ const crypto = require('node:crypto');
 
 const PORT = process.env.PORT || 3000;
 const PUBLIC = path.join(__dirname, 'public');
-const DATA_FILE = path.join(__dirname, 'data.json');
+const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'data.json');
 
 const MAX_RANGE_DAYS = 92;
 const MAX_BODY = 1024 * 1024;
