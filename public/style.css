@@ -47,9 +47,8 @@
   --radius: 16px;
   --radius-sm: 10px;
   --font-display: 'IM Fell English', 'Palatino Linotype', Palatino, Georgia, serif;
-  /* Hobbiton at dusk: hills, party tree, a round door in the hillside,
-     a smoking chimney, and Erebor far on the horizon */
-  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23262019'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%233a332b'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23232e18'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%23463b26'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%232c3a1c'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%2326331a'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%2326331a'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%231b2612'/%3E%3Crect x='284' y='101' width='13' height='4' fill='%234a4234'/%3E%3Crect x='286' y='104' width='9' height='16' fill='%234a4234'/%3E%3Ccircle cx='386' cy='95' r='8' fill='%23233118' stroke='%234a4234' stroke-width='2'/%3E%3Ccircle cx='386' cy='95' r='1.2' fill='%238a744f'/%3E%3C/svg%3E");
+  /* Shire hills at dusk with the Party Tree and Erebor far on the horizon */
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23262019'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%233a332b'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23232e18'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%23463b26'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%232c3a1c'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%2326331a'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%2326331a'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%231b2612'/%3E%3C/svg%3E");
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   --grain-opacity: 0.05;
   color-scheme: dark;
@@ -73,7 +72,7 @@
   --overlay: rgba(58, 47, 27, 0.45);
   --shadow: 0 4px 16px rgba(122, 94, 44, 0.18);
   /* the same landscape at midday */
-  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23d8d0b6'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%23eae4d0'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23d3ddb0'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%238a744f'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%23a9bd84'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%239db377'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%239db377'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%23c3d29c'/%3E%3Crect x='284' y='101' width='13' height='4' fill='%23b3a687'/%3E%3Crect x='286' y='104' width='9' height='16' fill='%23b3a687'/%3E%3Ccircle cx='386' cy='95' r='8' fill='%238fa568' stroke='%23b8ab84' stroke-width='2'/%3E%3Ccircle cx='386' cy='95' r='1.2' fill='%23a4732a'/%3E%3C/svg%3E");
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23d8d0b6'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%23eae4d0'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23d3ddb0'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%238a744f'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%23a9bd84'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%239db377'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%239db377'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%23c3d29c'/%3E%3C/svg%3E");
   --grain-opacity: 0.06;
   color-scheme: light;
 }
@@ -538,28 +537,6 @@ label.radio b { color: var(--gold); font-weight: 600; }
   font-size: 0.78rem;
   color: var(--muted);
   font-style: italic;
-}
-
-/* ---------- chimney smoke ---------- */
-
-.smoke { position: fixed; left: 20.1%; bottom: 76px; z-index: 0; pointer-events: none; }
-.smoke span {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--muted);
-  opacity: 0;
-  animation: smoke-rise 7s linear infinite;
-}
-.smoke span:nth-child(2) { animation-delay: 2.3s; }
-.smoke span:nth-child(3) { animation-delay: 4.6s; }
-@keyframes smoke-rise {
-  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
-  15% { opacity: 0.3; }
-  100% { transform: translate(16px, -70px) scale(1.7); opacity: 0; }
 }
 
 /* ---------- lost / expired plan ---------- */
