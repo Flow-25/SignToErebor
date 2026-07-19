@@ -121,8 +121,9 @@ function renderCreate() {
       .join('');
 
   app.innerHTML = `
-  <div class="page narrow">
+  <div class="page">
     <header class="topbar solo">${themeToggleHtml()}</header>
+    <div class="create-col">
     <header class="hero">
       ${DOOR_SVG}
       <h1>Sign To Erebor</h1>
@@ -155,41 +156,48 @@ function renderCreate() {
       <button type="submit" class="primary">Forge the sign-up sheet</button>
       <p class="hint">You'll get a link to share with your company. Up to 92 days per quest.</p>
     </form>
-    <section class="guide" id="guide">
-      <h2>What is this place?</h2>
-      <p>Sign To Erebor finds the day — and the hour — when your whole company can meet.
-         One of you forges a quest; everyone else opens the shared link and paints the
-         times that suit them. The greener a day glows, the more of you can come.
-         When the last day of a plan has passed, the plan quietly dissolves.</p>
-      <ol class="steps">
-        <li>
-          <h3>1 · Forge the quest</h3>
-          <p>Give it a name, choose the first and last day, and decide whether companions
-             pick whole days or hours within each day.</p>
-          <img src="/img/guide-forge.png" alt="The quest creation form" loading="lazy">
-        </li>
-        <li>
-          <h3>2 · Rally the company</h3>
-          <p>Copy the invite link and send it round. Each companion signs the contract
-             with their name — a password is optional, but keeps others from editing
-             your marks.</p>
-          <img src="/img/guide-sign.png" alt="Signing the contract with your name" loading="lazy">
-        </li>
-        <li>
-          <h3>3 · Paint your availability</h3>
-          <p>Click or drag across calendar days. In hours mode, click a day to paint the
-             hours that suit you — or drag one painted day across others to copy its
-             hours onto them.</p>
-          <img src="/img/guide-paint.png" alt="Picking hours within a single day" loading="lazy">
-        </li>
-        <li>
-          <h3>4 · Read the map</h3>
-          <p>Green shows when the company can gather, and the sidebar ranks the finest
-             times. Meet at the greenest hour.</p>
-          <img src="/img/guide-best.png" alt="The best times ranked in the sidebar" loading="lazy">
-        </li>
-      </ol>
-    </section>
+    </div>
+    <details class="guide" id="guide">
+      <summary>What is this place?</summary>
+      <div class="guide-body">
+        <p>Sign To Erebor finds the day — and the hour — when your whole company can meet.
+           One of you forges a quest; everyone else opens the shared link and paints the
+           times that suit them. The greener a day glows, the more of you can come.
+           When the last day of a plan has passed, the plan quietly dissolves.</p>
+        <ol class="steps">
+          <li>
+            <h3>1 · Forge the quest</h3>
+            <p>Give it a name, choose the first and last day, and decide whether companions
+               pick whole days or hours within each day.</p>
+            <img class="only-light" src="/img/guide-forge.png" alt="The quest creation form" loading="lazy">
+            <img class="only-dark" src="/img/guide-forge-dark.png" alt="The quest creation form" loading="lazy">
+          </li>
+          <li>
+            <h3>2 · Rally the company</h3>
+            <p>Copy the invite link and send it round. Each companion signs the contract
+               with their name — a password is optional, but keeps others from editing
+               your marks.</p>
+            <img class="only-light" src="/img/guide-sign.png" alt="Signing the contract with your name" loading="lazy">
+            <img class="only-dark" src="/img/guide-sign-dark.png" alt="Signing the contract with your name" loading="lazy">
+          </li>
+          <li>
+            <h3>3 · Paint your availability</h3>
+            <p>Click or drag across calendar days. In hours mode, click a day to paint the
+               hours that suit you — or drag one painted day across others to copy its
+               hours onto them.</p>
+            <img class="only-light" src="/img/guide-paint.png" alt="Picking hours within a single day" loading="lazy">
+            <img class="only-dark" src="/img/guide-paint-dark.png" alt="Picking hours within a single day" loading="lazy">
+          </li>
+          <li>
+            <h3>4 · Read the map</h3>
+            <p>Green shows when the company can gather, and the sidebar ranks the finest
+               times. Meet at the greenest hour.</p>
+            <img class="only-light" src="/img/guide-best.png" alt="The best times ranked in the sidebar" loading="lazy">
+            <img class="only-dark" src="/img/guide-best-dark.png" alt="The best times ranked in the sidebar" loading="lazy">
+          </li>
+        </ol>
+      </div>
+    </details>
     ${colophonHtml()}
   </div>`;
 
@@ -202,7 +210,11 @@ function renderCreate() {
   syncMode();
 
   if (location.hash === '#guide') {
-    document.getElementById('guide')?.scrollIntoView({ behavior: 'smooth' });
+    const guide = document.getElementById('guide');
+    if (guide) {
+      guide.open = true;
+      guide.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   form.addEventListener('submit', async e => {

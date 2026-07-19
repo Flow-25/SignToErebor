@@ -167,18 +167,55 @@ button { font: inherit; cursor: pointer; }
 .ghost.small { padding: 4px 14px; font-size: 0.8rem; }
 a.ghost { text-decoration: none; display: inline-flex; align-items: center; }
 
-/* ---------- guide ---------- */
+/* ---------- guide (collapsible, breaks out of the narrow column) ---------- */
 
-.guide { margin-top: 32px; }
-.guide h2 {
+.guide { max-width: 1150px; margin: 44px auto 0; }
+.guide summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 10px 26px;
   font-family: var(--font-display);
-  font-weight: normal;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: var(--gold);
-  margin-bottom: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  user-select: none;
 }
-.guide > p { font-size: 0.95rem; }
-.steps { list-style: none; padding: 0; margin-top: 20px; display: flex; flex-direction: column; gap: 26px; }
+.guide summary::-webkit-details-marker { display: none; }
+.guide summary:hover { border-color: var(--gold); }
+.guide summary::after {
+  content: '❯';
+  font-size: 0.85rem;
+  color: var(--muted);
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+}
+.guide[open] summary::after { transform: rotate(-90deg); }
+
+.guide-body { margin-top: 26px; }
+.guide-body > p {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.95rem;
+}
+.steps {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 30px 36px;
+  align-items: start;
+}
 .steps h3 {
   font-family: var(--font-display);
   font-weight: normal;
@@ -192,6 +229,9 @@ a.ghost { text-decoration: none; display: inline-flex; align-items: center; }
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow);
 }
+
+:root[data-theme="dark"] .only-light { display: none; }
+:root[data-theme="light"] .only-dark { display: none; }
 
 button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
@@ -253,6 +293,9 @@ label.radio b { color: var(--gold); font-weight: 600; }
 .tagline { color: var(--muted); margin-top: 8px; font-style: italic; }
 .tagline::before { content: '❧  '; }
 .tagline::after { content: '  ☙'; }
+
+.create-col { max-width: 580px; margin: 0 auto; }
+.create-col .primary { width: 100%; padding: 12px; }
 
 .fancy-rule {
   display: flex;
