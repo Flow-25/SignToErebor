@@ -86,16 +86,29 @@ function toast(msg) {
 
 // ---------- routing ----------
 
-window.addEventListener('hashchange', route);
-
 function route() {
   clearInterval(state.pollTimer);
   state.event = state.me = state.openDate = null;
   state.mySlots = new Set();
-  const m = location.hash.match(/^#e\/([\w-]+)/);
+  const legacy = location.hash.match(/^#e\/([\w-]+)/);
+  if (legacy) {
+    location.replace(`/e/${legacy[1]}`);
+    return;
+  }
+  const m = location.pathname.match(/^\/e\/([\w-]+)/);
   if (m) enterEvent(m[1]);
   else renderCreate();
 }
+
+const QUOTES = [
+  'The road goes ever on and on.',
+  'No admittance except on party business.',
+  'It does not do to leave a live dragon out of your calculations.',
+  "I'm going on an adventure!",
+  'A little food, a little cheer, and a date that suits us all.',
+];
+const colophonHtml = () =>
+  `<footer class="colophon">${QUOTES[Math.floor(Math.random() * QUOTES.length)]}</footer>`;
 
 // ---------- create page ----------
 
@@ -142,7 +155,7 @@ function renderCreate() {
       <button type="submit" class="primary">Forge the sign-up sheet</button>
       <p class="hint">You'll get a link to share with your company. Up to 92 days per quest.</p>
     </form>
-    <footer class="colophon">No admittance except on party business.</footer>
+    ${colophonHtml()}
   </div>`;
 
   const form = document.getElementById('create-form');
@@ -166,8 +179,7 @@ function renderCreate() {
         endHour: Number(f.endHour.value),
         slotMinutes: Number(f.slotMinutes.value),
       });
-      location.hash = `e/${ev.id}`;
-      toast('Quest created — share the link with your company!');
+      location.href = `/e/${ev.id}`;
     } catch (err) {
       toast(err.message);
     }
@@ -184,9 +196,14 @@ async function enterEvent(id) {
     app.innerHTML = `
     <div class="page narrow">
       <header class="hero">${DOOR_SVG}<h1>Sign To Erebor</h1></header>
-      <div class="card"><p>${esc(err.message)}</p>
-        <p class="hint">Plans dissolve once their last day has passed — this one may have run its course.</p>
-        <p><a href="#">← Forge a new quest</a></p></div>
+      <div class="card lost">
+        <span class="lost-mark">${MOUNTAIN_SVG}</span>
+        <h2>The dragon has claimed this plan</h2>
+        <p class="hint">${esc(err.message)}. Plans dissolve once their last day has passed —
+          this one may have run its course.</p>
+        <p><a href="/">← Forge a new quest</a></p>
+      </div>
+      ${colophonHtml()}
     </div>`;
     return;
   }
@@ -208,6 +225,11 @@ async function refreshEvent(id) {
   }
   state.mySlots = new Set(state.me ? state.me.slots : []);
   renderEvent();
+  const ready = ev.participants.length >= 2 && ev.participants.every(p => p.slots.length > 0);
+  if (ready && !sessionStorage.getItem(`ste-fw-${id}`)) {
+    sessionStorage.setItem(`ste-fw-${id}`, '1');
+    launchFireworks();
+  }
 }
 
 // availability aggregations: key -> [names]
@@ -233,7 +255,7 @@ function renderEvent() {
   app.innerHTML = `
   <div class="page">
     <header class="topbar">
-      <a class="brand" href="#">${MOUNTAIN_SVG} Sign To Erebor</a>
+      <a class="brand" href="/">${MOUNTAIN_SVG} Sign To Erebor</a>
       <span class="topbar-actions">
         ${themeToggleHtml()}
         <button class="ghost" data-copy>Copy invite link</button>
@@ -250,7 +272,7 @@ function renderEvent() {
       <div class="identity" id="join-card">${joinHtml()}</div>
     </section>
     <div class="layout">
-      <section class="calendar">${calendarHtml()}</section>
+      <section class="calendar">${journeyHtml()}${calendarHtml()}</section>
       <aside class="side">
         <div class="card">
           <h3>Legend</h3>
@@ -265,7 +287,7 @@ function renderEvent() {
         <div class="card"><h3>The company</h3>${companyHtml()}</div>
       </aside>
     </div>
-    <footer class="colophon">The road goes ever on and on.</footer>
+    ${colophonHtml()}
   </div>
   ${state.openDate ? modalHtml(state.openDate) : ''}`;
 
@@ -288,6 +310,48 @@ function renderEvent() {
   }
 }
 
+// "there and back again": company readiness as a journey from the Shire to Erebor
+function journeyHtml() {
+  const ev = state.event;
+  const total = ev.participants.length;
+  const done = ev.participants.filter(p => p.slots.length > 0).length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const label = total
+    ? `${done} of ${total} companions have marked their days${pct === 100 ? ' — the company is ready' : ''}`
+    : 'The company gathers — share the invite link';
+  return `
+  <div class="journey" style="--p:${pct}%" title="${esc(label)}">
+    <span class="j-end j-door">${DOOR_SVG}</span>
+    <div class="j-track"><span class="j-walker"></span></div>
+    <span class="j-end j-peak">${MOUNTAIN_SVG}</span>
+    <span class="j-label">${label}</span>
+  </div>`;
+}
+
+function launchFireworks() {
+  const wrap = document.createElement('div');
+  wrap.className = 'fireworks';
+  const colors = ['#d9a94a', '#7fa85e', '#c0563a', '#e6dfc9'];
+  for (let burst = 0; burst < 3; burst++) {
+    const cx = 15 + Math.random() * 70;
+    const cy = 15 + Math.random() * 35;
+    for (let i = 0; i < 26; i++) {
+      const p = document.createElement('span');
+      const ang = Math.random() * 2 * Math.PI;
+      const dist = 50 + Math.random() * 90;
+      p.style.left = `${cx}vw`;
+      p.style.top = `${cy}vh`;
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.setProperty('--dx', `${Math.cos(ang) * dist}px`);
+      p.style.setProperty('--dy', `${Math.sin(ang) * dist + 40}px`);
+      p.style.animationDelay = `${burst * 0.4 + Math.random() * 0.15}s`;
+      wrap.appendChild(p);
+    }
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 3500);
+}
+
 function joinHtml() {
   if (state.me) {
     return `<p>Signing as <b>${esc(state.me.name)}</b>
@@ -297,10 +361,13 @@ function joinHtml() {
   <form id="join-form" class="row join-row">
     <input name="name" required maxlength="50" placeholder="Your name" autocomplete="off">
     <input name="password" type="password" maxlength="100" placeholder="Password (optional)" autocomplete="off">
-    <button type="submit" class="primary">Join the company</button>
+    <button type="submit" class="primary"
+      title="Terms: cash on delivery, up to but not exceeding one fourteenth of total profits, if any.">
+      Sign the contract</button>
   </form>
-  <p class="hint">A password protects your name — without one, anyone entering your name can edit
-    your hours. Returning? Enter the same name (and password).</p>`;
+  <p class="hint">Signing lets you mark your availability. A password protects your name —
+    without one, anyone entering your name can edit your hours.
+    Returning? Enter the same name (and password).</p>`;
 }
 
 function calendarHtml() {

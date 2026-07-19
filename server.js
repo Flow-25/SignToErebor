@@ -232,7 +232,41 @@ const MIME = {
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
 };
+
+const escAttr = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
+function ogDate(s) {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+// serve index.html with per-event Open Graph tags so shared invite links
+// unfurl with the quest name and the door image
+function serveIndex(req, res, ev) {
+  fs.readFile(path.join(PUBLIC, 'index.html'), 'utf8', (err, html) => {
+    if (err) return sendJson(res, 500, { error: 'Cannot read index' });
+    const proto = String(req.headers['x-forwarded-proto'] || 'http').split(',')[0].trim();
+    const base = `${proto}://${req.headers.host || 'localhost'}`;
+    const title = ev ? `${ev.name} — Sign To Erebor` : 'Sign To Erebor';
+    const desc = ev
+      ? `Mark when you can come: ${ogDate(ev.startDate)} to ${ogDate(ev.endDate)}. `
+        + `${ev.participants.length} in the company so far.`
+      : 'Gather your company. Find the day the quest begins.';
+    const og = [
+      `<meta property="og:title" content="${escAttr(title)}">`,
+      `<meta property="og:description" content="${escAttr(desc)}">`,
+      `<meta property="og:type" content="website">`,
+      `<meta property="og:image" content="${base}/og.png">`,
+      `<meta name="twitter:card" content="summary_large_image">`,
+    ].join('\n  ');
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(html
+      .replace('<!--OG-->', og)
+      .replace(/<title>[^<]*<\/title>/, `<title>${escAttr(title)}</title>`));
+  });
+}
 
 function serveStatic(req, res, pathname) {
   const rel = pathname === '/' ? 'index.html' : pathname.slice(1);
@@ -282,6 +316,11 @@ const server = http.createServer(async (req, res) => {
     }
     if (req.method !== 'GET' && req.method !== 'HEAD') {
       return sendJson(res, 405, { error: 'Method not allowed' });
+    }
+    const page = pathname.match(/^\/e\/([\w-]+)$/);
+    if (pathname === '/' || page) {
+      purgeExpired();
+      return serveIndex(req, res, page ? data.events[page[1]] : null);
     }
     serveStatic(req, res, pathname);
   } catch (err) {

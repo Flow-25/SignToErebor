@@ -15,6 +15,18 @@
 
 * { box-sizing: border-box; margin: 0; }
 
+@font-face {
+  font-family: 'IM Fell English';
+  src: url('fonts/imfell-regular.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IM Fell English';
+  font-style: italic;
+  src: url('fonts/imfell-italic.woff2') format('woff2');
+  font-display: swap;
+}
+
 :root, :root[data-theme="dark"] {
   --bg: #1a150e;
   --bg-glow: #2a2315;
@@ -34,8 +46,10 @@
   --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
   --radius: 16px;
   --radius-sm: 10px;
-  /* rolling Shire hills with Erebor on the horizon, evening colors */
-  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23262019'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%233a332b'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23232e18'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%231b2612'/%3E%3C/svg%3E");
+  --font-display: 'IM Fell English', 'Palatino Linotype', Palatino, Georgia, serif;
+  /* Hobbiton at dusk: hills, party tree, a round door in the hillside,
+     a smoking chimney, and Erebor far on the horizon */
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23262019'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%233a332b'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23232e18'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%23463b26'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%232c3a1c'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%2326331a'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%2326331a'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%231b2612'/%3E%3Crect x='284' y='101' width='13' height='4' fill='%234a4234'/%3E%3Crect x='286' y='104' width='9' height='16' fill='%234a4234'/%3E%3Ccircle cx='240' cy='146' r='15.5' fill='none' stroke='%23d9a94a' stroke-width='1.5'/%3E%3Ccircle cx='240' cy='146' r='13' fill='%23567f3d'/%3E%3Ccircle cx='240' cy='146' r='2' fill='%23d9a94a'/%3E%3C/svg%3E");
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   --grain-opacity: 0.05;
   color-scheme: dark;
@@ -59,7 +73,7 @@
   --overlay: rgba(58, 47, 27, 0.45);
   --shadow: 0 4px 16px rgba(122, 94, 44, 0.18);
   /* the same landscape at midday */
-  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23d8d0b6'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%23eae4d0'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23d3ddb0'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%23c3d29c'/%3E%3C/svg%3E");
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23d8d0b6'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%23eae4d0'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23d3ddb0'/%3E%3Crect x='356' y='72' width='7' height='20' fill='%238a744f'/%3E%3Ccircle cx='360' cy='62' r='16' fill='%23a9bd84'/%3E%3Ccircle cx='347' cy='69' r='11' fill='%239db377'/%3E%3Ccircle cx='373' cy='69' r='11' fill='%239db377'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%23c3d29c'/%3E%3Crect x='284' y='101' width='13' height='4' fill='%23b3a687'/%3E%3Crect x='286' y='104' width='9' height='16' fill='%23b3a687'/%3E%3Ccircle cx='240' cy='146' r='15.5' fill='none' stroke='%23a4732a' stroke-width='1.5'/%3E%3Ccircle cx='240' cy='146' r='13' fill='%234c7536'/%3E%3Ccircle cx='240' cy='146' r='2' fill='%23e0c988'/%3E%3C/svg%3E");
   --grain-opacity: 0.06;
   color-scheme: light;
 }
@@ -203,7 +217,9 @@ label.radio b { color: var(--gold); font-weight: 600; }
 .hero-door .sheen { fill: rgba(255, 255, 255, 0.07); }
 .hero-door .knob { fill: var(--gold); }
 .hero h1 {
-  font-size: 2.3rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 2.6rem;
   letter-spacing: 0.04em;
   color: var(--gold);
   text-shadow: 0 2px 18px var(--gold-soft);
@@ -260,7 +276,13 @@ label.radio b { color: var(--gold); font-weight: 600; }
 .brand .mark { width: 22px; height: 13px; fill: currentColor; flex-shrink: 0; }
 
 .event-card { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
-.event-card h1 { font-size: 1.7rem; line-height: 1.2; }
+.event-card h1 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.9rem;
+  line-height: 1.2;
+}
+.event-card h1::first-letter { color: var(--gold); font-size: 1.25em; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
@@ -316,7 +338,14 @@ label.radio b { color: var(--gold); font-weight: 600; }
 
 /* ---------- calendar ---------- */
 
-.month h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--gold); font-style: italic; }
+.month h3 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: var(--gold);
+  font-style: italic;
+}
 
 .grid {
   display: grid;
@@ -396,7 +425,7 @@ label.radio b { color: var(--gold); font-weight: 600; }
 }
 .modal { width: 400px; max-width: 100%; max-height: 85vh; display: flex; flex-direction: column; }
 .modal header { display: flex; align-items: center; gap: 12px; }
-.modal h3 { flex: 1; font-size: 1.05rem; color: var(--gold); }
+.modal h3 { flex: 1; font-family: var(--font-display); font-weight: normal; font-size: 1.15rem; color: var(--gold); }
 .modal .close { color: var(--muted); background: none; border: none; font-size: 1.1rem; }
 .modal .close:hover { color: var(--text); }
 .modal .hint { margin: 6px 0 10px; }
@@ -448,6 +477,7 @@ label.radio b { color: var(--gold); font-weight: 600; }
 }
 .best b, .company b { color: var(--gold); font-weight: 700; }
 .company li.me { border: 1px solid var(--gold); }
+.company li span { font-style: italic; }
 .lock { width: 0.7em; height: 0.8em; vertical-align: -1px; margin-left: 2px; }
 .lock rect { fill: var(--muted); }
 .lock path { stroke: var(--muted); stroke-width: 1.6; }
@@ -472,4 +502,92 @@ label.radio b { color: var(--gold); font-weight: 600; }
 @keyframes toast-in {
   from { opacity: 0; transform: translate(-50%, 10px); }
   to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ---------- journey strip (there and back again) ---------- */
+
+.journey {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 6px 0;
+}
+.j-end { display: flex; color: var(--muted); }
+.j-door .hero-door { width: 30px; height: 30px; margin: 0; }
+.j-door .hero-door .frame-outer { stroke-width: 9; }
+.j-peak .mark { width: 30px; height: 18px; fill: currentColor; }
+.j-track { position: relative; border-top: 2px dashed var(--border); height: 2px; }
+.j-walker {
+  position: absolute;
+  top: -6px;
+  left: var(--p, 0%);
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2.5px solid var(--gold);
+  background: transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  transition: left 0.6s ease;
+}
+.j-label {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---------- chimney smoke ---------- */
+
+.smoke { position: fixed; left: 20.1%; bottom: 76px; z-index: 0; pointer-events: none; }
+.smoke span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0;
+  animation: smoke-rise 7s linear infinite;
+}
+.smoke span:nth-child(2) { animation-delay: 2.3s; }
+.smoke span:nth-child(3) { animation-delay: 4.6s; }
+@keyframes smoke-rise {
+  0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  15% { opacity: 0.3; }
+  100% { transform: translate(16px, -70px) scale(1.7); opacity: 0; }
+}
+
+/* ---------- lost / expired plan ---------- */
+
+.lost { text-align: center; }
+.lost-mark { display: inline-block; color: var(--muted); }
+.lost-mark .mark { width: 52px; height: 30px; fill: currentColor; }
+.lost h2 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.35rem;
+  color: var(--gold);
+  margin: 6px 0 4px;
+}
+
+/* ---------- fireworks ---------- */
+
+.fireworks { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+.fireworks span {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: fw 1.5s ease-out forwards;
+}
+@keyframes fw {
+  0% { opacity: 1; transform: translate(0, 0); }
+  70% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(var(--dx, 0), var(--dy, 0)); }
 }

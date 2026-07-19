@@ -38,3 +38,10 @@ Data is persisted to `data.json` next to the server.
 - Two themes — "morning parchment" (light) and "evening at Bag End" (dark) — toggled from the
   top bar, persisted per browser, defaulting to the system preference (`?theme=light|dark`
   in the URL forces one).
+- Event pages live at real paths (`/e/<id>`), and the server injects per-event Open Graph
+  tags (quest name, dates, door image) so invite links unfurl nicely in chats. Old `#e/<id>`
+  links redirect.
+- A "there and back again" strip shows how many of the company have marked their days as a
+  journey from the Shire to Erebor; fireworks fire once when everyone has.
+- Headings are set in IM Fell English (SIL OFL, by Igino Marini), self-hosted in
+  `public/fonts/`.
