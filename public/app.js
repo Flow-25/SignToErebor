@@ -51,18 +51,21 @@ async function api(method, url, body) {
 const MOUNTAIN_SVG = `<svg class="mark" viewBox="0 0 24 14" aria-hidden="true">
   <path d="M1 13 L8 3 L11 7.5 L15 1 L23 13 Z"/></svg>`;
 
-const DOOR_SVG = `<svg class="hero-door" viewBox="0 0 88 88" aria-hidden="true">
-  <circle class="frame" cx="44" cy="44" r="41"/>
-  <circle class="panel" cx="44" cy="44" r="32"/>
-  <g class="planks">
-    <line x1="44" y1="44" x2="44" y2="13"/>
-    <line x1="44" y1="44" x2="71" y2="28"/>
-    <line x1="44" y1="44" x2="71" y2="60"/>
-    <line x1="44" y1="44" x2="44" y2="75"/>
-    <line x1="44" y1="44" x2="17" y2="60"/>
-    <line x1="44" y1="44" x2="17" y2="28"/>
+const DOOR_SVG = `<svg class="hero-door" viewBox="0 0 96 96" aria-hidden="true">
+  <defs><clipPath id="doorclip"><circle cx="48" cy="48" r="34"/></clipPath></defs>
+  <circle class="frame-outer" cx="48" cy="48" r="43"/>
+  <circle class="frame" cx="48" cy="48" r="37.5"/>
+  <circle class="panel" cx="48" cy="48" r="34"/>
+  <g clip-path="url(#doorclip)">
+    <g class="planks">
+      <line x1="27" y1="10" x2="27" y2="86"/>
+      <line x1="41" y1="10" x2="41" y2="86"/>
+      <line x1="55" y1="10" x2="55" y2="86"/>
+      <line x1="69" y1="10" x2="69" y2="86"/>
+    </g>
+    <circle class="sheen" cx="36" cy="34" r="30"/>
   </g>
-  <circle class="knob" cx="44" cy="44" r="4.5"/></svg>`;
+  <circle class="knob" cx="48" cy="48" r="5"/></svg>`;
 
 const LOCK_SVG = `<svg class="lock" viewBox="0 0 12 14" aria-hidden="true">
   <rect x="1.5" y="6" width="9" height="7" rx="1.5"/>

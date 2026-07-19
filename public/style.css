@@ -195,10 +195,12 @@ label.radio b { color: var(--gold); font-weight: 600; }
 /* ---------- create page ---------- */
 
 .hero { text-align: center; padding: 24px 0 28px; }
-.hero-door { width: 86px; height: 86px; margin-bottom: 12px; }
-.hero-door .frame { fill: none; stroke: var(--gold); stroke-width: 3; }
-.hero-door .panel { fill: var(--door-lo); stroke: var(--door-hi); stroke-width: 2; }
-.hero-door .planks line { stroke: rgba(0, 0, 0, 0.25); stroke-width: 1.5; }
+.hero-door { width: 94px; height: 94px; margin-bottom: 12px; }
+.hero-door .frame-outer { fill: none; stroke: var(--border); stroke-width: 7; }
+.hero-door .frame { fill: none; stroke: var(--gold); stroke-width: 2.5; }
+.hero-door .panel { fill: var(--door-lo); }
+.hero-door .planks line { stroke: rgba(0, 0, 0, 0.28); stroke-width: 2; }
+.hero-door .sheen { fill: rgba(255, 255, 255, 0.07); }
 .hero-door .knob { fill: var(--gold); }
 .hero h1 {
   font-size: 2.3rem;
