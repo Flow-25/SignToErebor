@@ -165,6 +165,33 @@ button { font: inherit; cursor: pointer; }
 }
 .ghost:hover { border-color: var(--gold); background: var(--gold-soft); }
 .ghost.small { padding: 4px 14px; font-size: 0.8rem; }
+a.ghost { text-decoration: none; display: inline-flex; align-items: center; }
+
+/* ---------- guide ---------- */
+
+.guide { margin-top: 32px; }
+.guide h2 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.guide > p { font-size: 0.95rem; }
+.steps { list-style: none; padding: 0; margin-top: 20px; display: flex; flex-direction: column; gap: 26px; }
+.steps h3 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.15rem;
+  color: var(--gold);
+}
+.steps p { font-size: 0.9rem; color: var(--muted); margin: 4px 0 10px; }
+.steps img {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
 
 button:focus-visible, a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 

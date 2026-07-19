@@ -155,6 +155,41 @@ function renderCreate() {
       <button type="submit" class="primary">Forge the sign-up sheet</button>
       <p class="hint">You'll get a link to share with your company. Up to 92 days per quest.</p>
     </form>
+    <section class="guide" id="guide">
+      <h2>What is this place?</h2>
+      <p>Sign To Erebor finds the day — and the hour — when your whole company can meet.
+         One of you forges a quest; everyone else opens the shared link and paints the
+         times that suit them. The greener a day glows, the more of you can come.
+         When the last day of a plan has passed, the plan quietly dissolves.</p>
+      <ol class="steps">
+        <li>
+          <h3>1 · Forge the quest</h3>
+          <p>Give it a name, choose the first and last day, and decide whether companions
+             pick whole days or hours within each day.</p>
+          <img src="/img/guide-forge.png" alt="The quest creation form" loading="lazy">
+        </li>
+        <li>
+          <h3>2 · Rally the company</h3>
+          <p>Copy the invite link and send it round. Each companion signs the contract
+             with their name — a password is optional, but keeps others from editing
+             your marks.</p>
+          <img src="/img/guide-sign.png" alt="Signing the contract with your name" loading="lazy">
+        </li>
+        <li>
+          <h3>3 · Paint your availability</h3>
+          <p>Click or drag across calendar days. In hours mode, click a day to paint the
+             hours that suit you — or drag one painted day across others to copy its
+             hours onto them.</p>
+          <img src="/img/guide-paint.png" alt="Picking hours within a single day" loading="lazy">
+        </li>
+        <li>
+          <h3>4 · Read the map</h3>
+          <p>Green shows when the company can gather, and the sidebar ranks the finest
+             times. Meet at the greenest hour.</p>
+          <img src="/img/guide-best.png" alt="The best times ranked in the sidebar" loading="lazy">
+        </li>
+      </ol>
+    </section>
     ${colophonHtml()}
   </div>`;
 
@@ -165,6 +200,10 @@ function renderCreate() {
   };
   form.addEventListener('change', syncMode);
   syncMode();
+
+  if (location.hash === '#guide') {
+    document.getElementById('guide')?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -210,6 +249,11 @@ async function enterEvent(id) {
   state.pollTimer = setInterval(() => {
     if (!paint && !document.hidden && state.event) refreshEvent(id).catch(() => {});
   }, 10000);
+  const day = new URLSearchParams(location.search).get('day');
+  if (day && state.event?.mode === 'hours' && /^\d{4}-\d{2}-\d{2}$/.test(day)) {
+    state.openDate = day;
+    renderEvent();
+  }
 }
 
 async function refreshEvent(id) {
@@ -257,6 +301,7 @@ function renderEvent() {
     <header class="topbar">
       <a class="brand" href="/">${MOUNTAIN_SVG} Sign To Erebor</a>
       <span class="topbar-actions">
+        <a class="ghost" href="/#guide">What is this?</a>
         ${themeToggleHtml()}
         <button class="ghost" data-copy>Copy invite link</button>
       </span>
