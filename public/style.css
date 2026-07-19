@@ -281,7 +281,7 @@ label.radio b { color: var(--gold); font-weight: 600; }
   font-size: 1.9rem;
   line-height: 1.2;
 }
-.event-card h1::first-letter { color: var(--gold); font-size: 1.25em; }
+.event-card h1::first-letter { text-transform: uppercase; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
