@@ -48,9 +48,29 @@ async function api(method, url, body) {
   return json;
 }
 
+const MOUNTAIN_SVG = `<svg class="mark" viewBox="0 0 24 14" aria-hidden="true">
+  <path d="M1 13 L8 3 L11 7.5 L15 1 L23 13 Z"/></svg>`;
+
+const DOOR_SVG = `<svg class="hero-door" viewBox="0 0 88 88" aria-hidden="true">
+  <circle class="frame" cx="44" cy="44" r="41"/>
+  <circle class="panel" cx="44" cy="44" r="32"/>
+  <g class="planks">
+    <line x1="44" y1="44" x2="44" y2="13"/>
+    <line x1="44" y1="44" x2="71" y2="28"/>
+    <line x1="44" y1="44" x2="71" y2="60"/>
+    <line x1="44" y1="44" x2="44" y2="75"/>
+    <line x1="44" y1="44" x2="17" y2="60"/>
+    <line x1="44" y1="44" x2="17" y2="28"/>
+  </g>
+  <circle class="knob" cx="44" cy="44" r="4.5"/></svg>`;
+
+const LOCK_SVG = `<svg class="lock" viewBox="0 0 12 14" aria-hidden="true">
+  <rect x="1.5" y="6" width="9" height="7" rx="1.5"/>
+  <path d="M3.5 6 V4 a2.5 2.5 0 0 1 5 0 V6" fill="none"/></svg>`;
+
 const themeToggleHtml = () =>
   `<button class="ghost" data-theme-toggle>${
-    document.documentElement.dataset.theme === 'dark' ? '☀️ Daylight' : '🌙 Evening'
+    document.documentElement.dataset.theme === 'dark' ? 'Daylight' : 'Evening'
   }</button>`;
 
 function toast(msg) {
@@ -88,7 +108,8 @@ function renderCreate() {
   <div class="page narrow">
     <header class="topbar solo">${themeToggleHtml()}</header>
     <header class="hero">
-      <h1>⛰ Sign To Erebor</h1>
+      ${DOOR_SVG}
+      <h1>Sign To Erebor</h1>
       <p class="tagline">Gather your company. Find the day the quest begins.</p>
     </header>
     <form id="create-form" class="card">
@@ -157,7 +178,7 @@ async function enterEvent(id) {
   } catch (err) {
     app.innerHTML = `
     <div class="page narrow">
-      <header class="hero"><h1>⛰ Sign To Erebor</h1></header>
+      <header class="hero">${DOOR_SVG}<h1>Sign To Erebor</h1></header>
       <div class="card"><p>${esc(err.message)}</p>
         <p class="hint">Plans dissolve once their last day has passed — this one may have run its course.</p>
         <p><a href="#">← Forge a new quest</a></p></div>
@@ -201,16 +222,16 @@ const slotCounts = () => countMap(s => s);
 function renderEvent() {
   const ev = state.event;
   const hoursChip = ev.mode === 'hours'
-    ? `🕘 ${timeLabel(ev.startHour * 60)}–${timeLabel(ev.endHour * 60)}`
-    : '📅 whole days';
+    ? `${timeLabel(ev.startHour * 60)}–${timeLabel(ev.endHour * 60)} each day`
+    : 'whole days';
 
   app.innerHTML = `
   <div class="page">
     <header class="topbar">
-      <a class="brand" href="#">⛰ Sign To Erebor</a>
+      <a class="brand" href="#">${MOUNTAIN_SVG} Sign To Erebor</a>
       <span class="topbar-actions">
         ${themeToggleHtml()}
-        <button class="ghost" data-copy>🔗 Copy invite link</button>
+        <button class="ghost" data-copy>Copy invite link</button>
       </span>
     </header>
     <section class="card event-card">
@@ -218,8 +239,8 @@ function renderEvent() {
       <div class="chips">
         <span class="chip">${niceDate(ev.startDate)} → ${niceDate(ev.endDate)}</span>
         <span class="chip">${hoursChip}</span>
-        <span class="chip">👥 ${ev.participants.length} in the company</span>
-        <span class="chip">⏳ dissolves after ${niceDate(ev.endDate)}</span>
+        <span class="chip">${ev.participants.length} ${ev.participants.length === 1 ? 'companion' : 'companions'}</span>
+        <span class="chip">dissolves after ${niceDate(ev.endDate)}</span>
       </div>
       <div class="identity" id="join-card">${joinHtml()}</div>
     </section>
@@ -229,11 +250,11 @@ function renderEvent() {
         <div class="card">
           <h3>Legend</h3>
           <div class="legend-bar"></div>
-          <p class="hint">Darker green = more of the company can make it.
-            ${ev.mode === 'hours'
+          <div class="legend-scale"><span>no one</span><span>everyone</span></div>
+          <p class="hint">${ev.mode === 'hours'
               ? 'Click a day to pick your hours. Drag from a day across other days to copy its hours onto them.'
-              : 'Click or drag across days to mark yours.'}
-            A gold ring means you picked it.</p>
+              : 'Click or drag across days to mark when you can come.'}
+            A gold ring marks your own picks.</p>
         </div>
         <div class="card"><h3>Best ${ev.mode === 'hours' ? 'times' : 'days'}</h3>${bestHtml()}</div>
         <div class="card"><h3>The company</h3>${companyHtml()}</div>
@@ -316,9 +337,19 @@ function monthHtml(monthStart, rangeStart, rangeEnd) {
       : [...state.mySlots].some(s => s.startsWith(key));
     const attr = ev.mode === 'days' ? `data-paint="${key}"` : `data-open="${key}"`;
     const title = names.length ? ` title="Available: ${esc(names.join(', '))}"` : '';
+    let myMark = '';
+    if (mine) {
+      if (ev.mode === 'hours') {
+        const h = [...state.mySlots].filter(s => s.startsWith(key)).length * ev.slotMinutes / 60;
+        myMark = `<span class="my-mark">${h % 1 ? h.toFixed(1) : h}h</span>`;
+      } else {
+        myMark = '<span class="my-mark">✓</span>';
+      }
+    }
     cells += `
       <div class="day active ${mine ? 'mine' : ''}" ${attr} style="--heat:${heat.toFixed(3)}"${title}>
         <span class="num">${d}</span>
+        ${myMark}
         ${names.length ? `<span class="badge">${names.length}</span>` : ''}
       </div>`;
   }
@@ -350,8 +381,8 @@ function modalHtml(date) {
     <div class="modal card">
       <header>
         <h3>${niceDate(date, { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
-        <button class="link" data-whole="${date}">whole day</button>
-        <button class="close" data-close aria-label="Close">✕</button>
+        <button class="ghost small" data-whole="${date}">Whole day</button>
+        <button class="close" data-close aria-label="Close">&times;</button>
       </header>
       <p class="hint">Click or drag to paint the hours that suit you.</p>
       <div class="slots">${rows}</div>
@@ -371,7 +402,8 @@ function bestHtml() {
     const label = ev.mode === 'days'
       ? niceDate(key)
       : `${niceDate(key.slice(0, 10))} · ${key.slice(11)}`;
-    return `<li title="${esc(names.join(', '))}"><span>${label}</span><b>${names.length}/${total}</b></li>`;
+    return `<li style="--w:${Math.round(names.length / total * 100)}%" title="${esc(names.join(', '))}">
+      <span>${label}</span><b>${names.length}/${total}</b></li>`;
   }).join('') + '</ol>';
 }
 
@@ -383,7 +415,7 @@ function companyHtml() {
       ? `${p.slots.length}d`
       : `${(p.slots.length * ev.slotMinutes / 60).toLocaleString('en-GB', { maximumFractionDigits: 1 })}h`;
     const me = state.me && p.id === state.me.id;
-    const lock = p.hasPassword ? ' 🔒' : '';
+    const lock = p.hasPassword ? ` ${LOCK_SVG}` : '';
     return `<li${me ? ' class="me"' : ''}><span>${esc(p.name)}${lock}${me ? ' (you)' : ''}</span><b>${amount}</b></li>`;
   }).join('') + '</ul>';
 }
@@ -518,7 +550,7 @@ document.addEventListener('click', e => {
     document.documentElement.dataset.theme = next;
     localStorage.setItem('ste-theme', next);
     document.querySelectorAll('[data-theme-toggle]').forEach(b => {
-      b.textContent = next === 'dark' ? '☀️ Daylight' : '🌙 Evening';
+      b.textContent = next === 'dark' ? 'Daylight' : 'Evening';
     });
     return;
   }
