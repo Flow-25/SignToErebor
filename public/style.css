@@ -34,6 +34,10 @@
   --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
   --radius: 16px;
   --radius-sm: 10px;
+  /* rolling Shire hills with Erebor on the horizon, evening colors */
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23262019'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%233a332b'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23232e18'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%231b2612'/%3E%3C/svg%3E");
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.05;
   color-scheme: dark;
 }
 
@@ -54,6 +58,9 @@
   --badge-bg: rgba(58, 47, 27, 0.14);
   --overlay: rgba(58, 47, 27, 0.45);
   --shadow: 0 4px 16px rgba(122, 94, 44, 0.18);
+  /* the same landscape at midday */
+  --scenery: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180' preserveAspectRatio='none'%3E%3Cpolygon points='1120,180 1240,30 1360,180' fill='%23d8d0b6'/%3E%3Cpolygon points='1206,72 1240,30 1274,72' fill='%23eae4d0'/%3E%3Cpath d='M0,180 L0,118 Q360,58 720,128 T1440,108 L1440,180 Z' fill='%23d3ddb0'/%3E%3Cpath d='M0,180 L0,150 Q480,92 960,158 T1440,138 L1440,180 Z' fill='%23c3d29c'/%3E%3C/svg%3E");
+  --grain-opacity: 0.06;
   color-scheme: light;
 }
 
@@ -70,9 +77,35 @@ body {
   line-height: 1.5;
 }
 
+/* film grain over everything; scenery pinned to the viewport bottom */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--grain);
+  opacity: var(--grain-opacity);
+  pointer-events: none;
+  z-index: 99;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: auto 0 0 0;
+  height: 180px;
+  background: var(--scenery) bottom center / 100% 100% no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
 a { color: var(--gold); }
 
-.page { max-width: 1500px; margin: 0 auto; padding: 20px clamp(16px, 3vw, 48px) 80px; }
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 20px clamp(16px, 3vw, 48px) 120px;
+}
 .page.narrow { max-width: 580px; }
 
 .card {
@@ -97,6 +130,17 @@ button { font: inherit; cursor: pointer; }
   border-radius: 999px;
 }
 .primary:hover { filter: brightness(1.08); }
+.primary::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-right: 10px;
+  vertical-align: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
 
 .ghost {
   padding: 7px 16px;
@@ -165,6 +209,30 @@ label.radio b { color: var(--gold); font-weight: 600; }
 .tagline { color: var(--muted); margin-top: 8px; font-style: italic; }
 .tagline::before { content: '❧  '; }
 .tagline::after { content: '  ☙'; }
+
+.fancy-rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--gold);
+  margin: 4px 0 20px;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+.fancy-rule::before, .fancy-rule::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--border);
+}
+
+.colophon {
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.8rem;
+  margin-top: 48px;
+  opacity: 0.85;
+}
 .page.narrow .primary { width: 100%; padding: 12px; }
 
 /* ---------- event page shell ---------- */

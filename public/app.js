@@ -112,6 +112,7 @@ function renderCreate() {
       <h1>Sign To Erebor</h1>
       <p class="tagline">Gather your company. Find the day the quest begins.</p>
     </header>
+    <div class="fancy-rule">❦</div>
     <form id="create-form" class="card">
       <label>Quest name
         <input name="name" required maxlength="100" placeholder="e.g. Council at Bag End" autocomplete="off">
@@ -138,6 +139,7 @@ function renderCreate() {
       <button type="submit" class="primary">Forge the sign-up sheet</button>
       <p class="hint">You'll get a link to share with your company. Up to 92 days per quest.</p>
     </form>
+    <footer class="colophon">No admittance except on party business.</footer>
   </div>`;
 
   const form = document.getElementById('create-form');
@@ -260,6 +262,7 @@ function renderEvent() {
         <div class="card"><h3>The company</h3>${companyHtml()}</div>
       </aside>
     </div>
+    <footer class="colophon">The road goes ever on and on.</footer>
   </div>
   ${state.openDate ? modalHtml(state.openDate) : ''}`;
 
